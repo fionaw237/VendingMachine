@@ -24,21 +24,49 @@ public class SlotTest {
         fizzyJuices.add(fizzyJuice2);
         fizzyJuices.add(fizzyJuice3);
 
-        slot = new Slot("C4", fizzyJuices, 0.6);
+        slot = new Slot(SlotCode.A1,0.6);
     }
 
     @Test
     public void hasCode() {
-        assertEquals("C4", slot.getCode());
+        assertEquals(SlotCode.A1, slot.getCode());
     }
 
     @Test
-    public void hasProducts() {
-        assertEquals(3, slot.stock());
+    public void canGetPrice() {
+        assertEquals(0.6, slot.getPrice(), 0.01);
     }
 
-//    @Test
-//    public void canGetPrice() {
-//        assertEquals(0.6, slot.getProductPrice());
-//    }
+    @Test
+    public void startsEmpty() {
+        assertEquals(0, slot.getNumberOfProducts());
+    }
+
+    @Test
+    public void canAddProduct() {
+        slot.addProduct(fizzyJuice1);
+        assertEquals(1, slot.getNumberOfProducts());
+    }
+
+    @Test
+    public void canOnlyAddOneTypeOfProduct() {
+        slot.addProduct(fizzyJuice1);
+        Crisps crisps = new Crisps("Salt and Vinegar");
+        slot.addProduct(crisps);
+        assertEquals(1, slot.getNumberOfProducts());
+    }
+
+    @Test
+    public void canAddTwoProductsOfSameType() {
+        slot.addProduct(fizzyJuice1);
+        slot.addProduct(fizzyJuice2);
+        assertEquals(2, slot.getNumberOfProducts());
+    }
+
+    @Test
+    public void canRemoveProduct() {
+        slot.addProduct(fizzyJuice1);
+        slot.addProduct(fizzyJuice2);
+        assertEquals(fizzyJuice1, slot.returnProduct());
+    }
 }
